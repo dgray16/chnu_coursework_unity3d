@@ -148,6 +148,22 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		na3.setInstantiated (instantiated);
 		listOfLevelOneNa.Add (na3);
 
+		Na na4 = new Na ();
+		na4.setX (10);
+		na4.setY (5);
+		na4.setZ (0);
+		instantiated = na4.instantiate (naPrefab);
+		na4.setInstantiated (instantiated);
+		listOfLevelOneNa.Add (na4);
+
+		Na na5 = new Na ();
+		na5.setX (5);
+		na5.setY (2.5F);
+		na5.setZ (0);
+		instantiated = na5.instantiate (naPrefab);
+		na5.setInstantiated (instantiated);
+		listOfLevelOneNa.Add (na5);
+
 		/*instantiateAndMove(0, 0, 0, naPrefab);
 		instantiateAndMove(0, 5, 0, naPrefab);
 		instantiateAndMove(10, 0, 0, naPrefab);
@@ -164,7 +180,6 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		cl1.setZ (0);
 		GameObject instantiated = cl1.instantiate (clPrefab);
 		cl1.setInstantiated (instantiated);
-
 		listOfLevelOneCl.Add (cl1);
 
 		Cl cl2 = new Cl ();
@@ -173,8 +188,23 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		cl2.setZ (0);
 		instantiated = cl2.instantiate (clPrefab);
 		cl2.setInstantiated (instantiated);
-
 		listOfLevelOneCl.Add (cl2);
+
+		Cl cl3 = new Cl ();
+		cl3.setX (5);
+		cl3.setY (5);
+		cl3.setZ (0);
+		instantiated = cl3.instantiate (clPrefab);
+		cl3.setInstantiated (instantiated);
+		listOfLevelOneCl.Add (cl3);
+
+		Cl cl4 = new Cl ();
+		cl4.setX (10);
+		cl4.setY (2.5F);
+		cl4.setZ (0);
+		instantiated = cl4.instantiate (clPrefab);
+		cl4.setInstantiated (instantiated);
+		listOfLevelOneCl.Add (cl4);
 
 		/*instantiateAndMove (0, 2.5F, 0, clPrefab);
 		instantiateAndMove (5, 0, 0, clPrefab);
@@ -189,35 +219,58 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		Na na1 = listOfLevelOneNa [0];
 		Na na2 = listOfLevelOneNa [1];
 		Na na3 = listOfLevelOneNa [2];
+		Na na4 = listOfLevelOneNa[3];
+		Na na5 = listOfLevelOneNa[4];
 
 		Cl cl1 = listOfLevelOneCl [0];
 		Cl cl2 = listOfLevelOneCl [1];
+		Cl cl3 = listOfLevelOneCl [2];
+		Cl cl4 = listOfLevelOneCl [3];
 
 		na1.getNext ().Add (cl1);
 		na1.getNext ().Add (cl2);
 		na1.drawLinesToNext ();
 
 		na2.getNext ().Add (cl1);
+		na2.getNext ().Add (cl3);
 		na2.drawLinesToNext ();
 
 		na3.getNext ().Add (cl2);
+		na3.getNext ().Add (cl4);
 		na3.drawLinesToNext ();
 
+		na4.getNext ().Add (cl3);
+		na4.getNext ().Add (cl4);
+		na4.drawLinesToNext ();
+
+		na5.getNext ().Add (cl1);
+		na5.getNext ().Add (cl2);
+		na5.getNext ().Add (cl3);
+		na5.getNext ().Add (cl4);
+		na5.drawLinesToNext ();
 
 	}
 
 	public void setNextForLevelOneOfCl(){
 		Cl cl1 = listOfLevelOneCl [0];
 		Cl cl2 = listOfLevelOneCl [1];
+		Cl cl3 = listOfLevelOneCl [2];
+		Cl cl4 = listOfLevelOneCl [3];
 
 		Na na1 = listOfLevelOneNa [0];
 		Na na2 = listOfLevelOneNa [1];
+		Na na3 = listOfLevelOneNa [2];
+		Na na4 = listOfLevelOneNa [3];
+		Na na5 = listOfLevelOneNa [4];
 
 		cl1.getNext ().Add (na1);
 		cl1.getNext ().Add (na2);
+		cl1.getNext ().Add (na5);
 		cl1.drawLinesToNext ();
 
 		cl2.getNext ().Add (na1);
+		cl2.getNext ().Add (na3);
+		cl2.getNext ().Add (na5);
 		cl2.drawLinesToNext ();
 	}
 
@@ -304,7 +357,7 @@ class Na : MonoBehaviour{
 		scale.y = Vector3.Distance (getInstantiated().transform.position, next.getInstantiated().transform.position) / 4;
 
 		naCylinder.transform.localScale = scale;
-		naCylinder.transform.position = new Vector3 (scale.y, getY(), getZ());
+		naCylinder.transform.position = new Vector3 ( (getX() + scale.y), getY(), getZ() );
 
 		Vector3 rotation = new Vector3 (0, 0, 90);
 		naCylinder.transform.Rotate (rotation);
@@ -335,7 +388,7 @@ class Na : MonoBehaviour{
 		scale.y = Vector3.Distance (getInstantiated().transform.position, next.getInstantiated().transform.position) / 4;
 
 		naCylinder.transform.localScale = scale;
-		naCylinder.transform.position = new Vector3 (getX(), scale.y, getZ());
+		naCylinder.transform.position = new Vector3 ( getX(), (getY() + scale.y), getZ() );
 	}
 
 	private void drawLineReverseByY(Cl next){
@@ -443,12 +496,13 @@ class Cl : MonoBehaviour{
 			float newY = y - item.getY ();
 			float newZ = z - item.getZ ();
 
-			if (newX < 0) drawLineByX (item);
-			if (newY < 0) drawLineByY (item);	
-			if (newZ < 0) drawLineByZ (item);
+			if ( newX < 0 ) drawLineByX (item);
+				else if ( newY < 0 ) drawLineByY (item);	
+					else if ( newZ < 0 ) drawLineByZ (item);
 
-			if (newX > 0) drawLineReverseByX (item);
-			if (newY > 0) drawLineReverseByY (item);
+			if ( newX > 0 ) drawLineReverseByX (item);
+				else if ( newY > 0 ) drawLineReverseByY (item);
+					else if ( newZ > 0 ) drawLineReverseByZ (item);
 		}
 	}
 
@@ -461,7 +515,10 @@ class Cl : MonoBehaviour{
 		scale.y = Vector3.Distance (getInstantiated().transform.position, next.getInstantiated().transform.position) / 4;
 
 		clCylinder.transform.localScale = scale;
-		clCylinder.transform.position = new Vector3 (getX(), scale.y, getZ());
+		clCylinder.transform.position = new Vector3 ( (getX() + scale.y), getY(), getZ() );
+
+		Vector3 rotation = new Vector3 (0, 0, 90);
+		clCylinder.transform.Rotate (rotation);
 	}
 
 	private void drawLineReverseByX(Na next){
@@ -488,7 +545,7 @@ class Cl : MonoBehaviour{
 		scale.y = Vector3.Distance (getInstantiated().transform.position, next.getInstantiated().transform.position) / 4;
 
 		clCylinder.transform.localScale = scale;
-		clCylinder.transform.position = new Vector3 (getX(), (getY() - scale.y), getZ());
+		clCylinder.transform.position = new Vector3 (getX(), (getY() + scale.y), getZ());
 	}
 
 	private void drawLineReverseByY(Na next){
@@ -500,7 +557,7 @@ class Cl : MonoBehaviour{
 		scale.y = Vector3.Distance (getInstantiated().transform.position, next.getInstantiated().transform.position) / 4;
 
 		clCylinder.transform.localScale = scale;
-		clCylinder.transform.position = new Vector3 (getX(), (getY() + scale.y), getZ());
+		clCylinder.transform.position = new Vector3 (getX(), (getY() - scale.y), getZ());
 	}
 
 	private void drawLineByZ(Na next){
