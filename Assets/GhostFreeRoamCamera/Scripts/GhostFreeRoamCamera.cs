@@ -102,23 +102,33 @@ public class GhostFreeRoamCamera : MonoBehaviour
 	List<Na> listOfLevelOneNa;
 	List<Cl> listOfLevelOneCl;
 
-	void Start(){
-		Debug.LogWarning ("Hello!");
+	List<Na> listOfLevelTwoNa;
+	List<Cl> listOfLevelTwoCl;
 
+	List<Na> listOfLevelThreeNa;
+	List<Cl> listOfLevelThreeCl;
+
+	void Start(){
 		GameObject naPrefab = UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/Na/Na.prefab", typeof(GameObject)) as GameObject;
 		GameObject clPrefab = UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/Cl/Cl.prefab", typeof(GameObject)) as GameObject;
 
 		createLevelOneOfNa (naPrefab);
 		createLevelOneOfCl (clPrefab);
 
+		createLevelTwoOfNa (naPrefab);
+		createLevelTwoOfCl (clPrefab);
+
+		createLevelThreeOfNa (naPrefab);
+		createLevelThreeOfCl (clPrefab);
+
 		setNextForLevelOneOfNa ();
 		setNextForLevelOneOfCl ();
 
-		//createLevelTwoOfNa (naPrefab);
-		//createLevelTwoOfCl (clPrefab);
+		setNextForLevelTwoOfNa ();
+		setNextForLevelTwoOfCl ();
 
-		//createLevelThreeOfNa (naPrefab);
-		//createLevelThreeOfCl (clPrefab);
+		setNextForLevelThreeOfNa ();
+		setNextForLevelThreeOfCl ();
 	}
 
 	public void createLevelOneOfNa(GameObject naPrefab){
@@ -129,6 +139,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		na1.setY (0);
 		na1.setZ (0);
 		GameObject instantiated = na1.instantiate (naPrefab);
+		instantiated.transform.name = "Na 1_1";
 		na1.setInstantiated (instantiated);
 		listOfLevelOneNa.Add (na1);
 
@@ -137,6 +148,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		na2.setY (5);
 		na2.setZ (0);
 		instantiated = na2.instantiate (naPrefab);
+		instantiated.transform.name = "Na 1_2";
 		na2.setInstantiated (instantiated);
 		listOfLevelOneNa.Add (na2);
 
@@ -145,6 +157,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		na3.setY (0);
 		na3.setZ (0);
 		instantiated = na3.instantiate (naPrefab);
+		instantiated.transform.name = "Na 1_3";
 		na3.setInstantiated (instantiated);
 		listOfLevelOneNa.Add (na3);
 
@@ -153,6 +166,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		na4.setY (5);
 		na4.setZ (0);
 		instantiated = na4.instantiate (naPrefab);
+		instantiated.transform.name = "Na 1_4";
 		na4.setInstantiated (instantiated);
 		listOfLevelOneNa.Add (na4);
 
@@ -161,6 +175,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		na5.setY (2.5F);
 		na5.setZ (0);
 		instantiated = na5.instantiate (naPrefab);
+		instantiated.transform.name = "Na 1_5";
 		na5.setInstantiated (instantiated);
 		listOfLevelOneNa.Add (na5);
 
@@ -179,6 +194,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		cl1.setY (2.5F);
 		cl1.setZ (0);
 		GameObject instantiated = cl1.instantiate (clPrefab);
+		instantiated.transform.name = "Cl 1_1";
 		cl1.setInstantiated (instantiated);
 		listOfLevelOneCl.Add (cl1);
 
@@ -187,6 +203,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		cl2.setY (0);
 		cl2.setZ (0);
 		instantiated = cl2.instantiate (clPrefab);
+		instantiated.transform.name = "Cl 1_2";
 		cl2.setInstantiated (instantiated);
 		listOfLevelOneCl.Add (cl2);
 
@@ -195,6 +212,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		cl3.setY (5);
 		cl3.setZ (0);
 		instantiated = cl3.instantiate (clPrefab);
+		instantiated.transform.name = "Cl 1_3";
 		cl3.setInstantiated (instantiated);
 		listOfLevelOneCl.Add (cl3);
 
@@ -203,6 +221,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		cl4.setY (2.5F);
 		cl4.setZ (0);
 		instantiated = cl4.instantiate (clPrefab);
+		instantiated.transform.name = "Cl 1_4";
 		cl4.setInstantiated (instantiated);
 		listOfLevelOneCl.Add (cl4);
 
@@ -227,6 +246,320 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		Cl cl3 = listOfLevelOneCl [2];
 		Cl cl4 = listOfLevelOneCl [3];
 
+		Cl cl2_1 = listOfLevelTwoCl [0];
+		Cl cl2_2 = listOfLevelTwoCl [1];
+		Cl cl2_3 = listOfLevelTwoCl [2];
+		Cl cl2_4 = listOfLevelTwoCl [3];
+		Cl cl2_5 = listOfLevelTwoCl [4];
+
+		na1.getNext ().Add (cl1);
+		na1.getNext ().Add (cl2);
+		na1.getNext ().Add (cl2_1);
+		na1.drawLinesToNext ();
+
+		na2.getNext ().Add (cl1);
+		na2.getNext ().Add (cl3);
+		na2.getNext ().Add (cl2_2);
+		na2.drawLinesToNext ();
+
+		na3.getNext ().Add (cl2);
+		na3.getNext ().Add (cl4);
+		na3.getNext ().Add (cl2_4);
+		na3.drawLinesToNext ();
+
+		na4.getNext ().Add (cl3);
+		na4.getNext ().Add (cl4);
+		na4.getNext ().Add (cl2_5);
+		na4.drawLinesToNext ();
+
+		na5.getNext ().Add (cl1);
+		na5.getNext ().Add (cl2);
+		na5.getNext ().Add (cl3);
+		na5.getNext ().Add (cl4);
+		na5.getNext ().Add (cl2_3);
+		na5.drawLinesToNext ();
+
+	}
+
+	public void setNextForLevelOneOfCl(){
+		Cl cl1 = listOfLevelOneCl [0];
+		Cl cl2 = listOfLevelOneCl [1];
+		Cl cl3 = listOfLevelOneCl [2];
+		Cl cl4 = listOfLevelOneCl [3];
+
+		Na na1 = listOfLevelOneNa [0];
+		Na na2 = listOfLevelOneNa [1];
+		Na na3 = listOfLevelOneNa [2];
+		Na na4 = listOfLevelOneNa [3];
+		Na na5 = listOfLevelOneNa [4];
+
+		Na na2_1 = listOfLevelTwoNa [0];
+		Na na2_2 = listOfLevelTwoNa [1];
+		Na na2_3 = listOfLevelTwoNa [2];
+		Na na2_4 = listOfLevelTwoNa [3];
+
+		cl1.getNext ().Add (na1);
+		cl1.getNext ().Add (na2);
+		cl1.getNext ().Add (na5);
+		cl1.getNext ().Add (na2_1);
+		cl1.drawLinesToNext ();
+
+		cl2.getNext ().Add (na1);
+		cl2.getNext ().Add (na3);
+		cl2.getNext ().Add (na5);
+		cl2.getNext ().Add (na2_2);
+		cl2.drawLinesToNext ();
+
+		cl3.getNext ().Add (na2);
+		cl3.getNext ().Add (na4);
+		cl3.getNext ().Add (na5);
+		cl3.getNext ().Add (na2_3);
+		cl3.drawLinesToNext ();
+
+		cl4.getNext ().Add (na3);
+		cl4.getNext ().Add (na4);
+		cl4.getNext ().Add (na5);
+		cl4.getNext ().Add (na2_4);
+		cl4.drawLinesToNext ();
+	}
+
+	public void createLevelTwoOfNa(GameObject naPrefab){
+		listOfLevelTwoNa = new List<Na> ();
+
+		Na na1 = new Na ();
+		na1.setX (0);
+		na1.setY (2.5F);
+		na1.setZ (5);
+		GameObject instantiated = na1.instantiate (naPrefab);
+		instantiated.transform.name = "Na 2_1";
+		na1.setInstantiated (instantiated);
+		listOfLevelTwoNa.Add (na1);
+
+		Na na2 = new Na ();
+		na2.setX (5);
+		na2.setY (0);
+		na2.setZ (5);
+		instantiated = na2.instantiate (naPrefab);
+		instantiated.transform.name = "Na 2_2";
+		na2.setInstantiated (instantiated);
+		listOfLevelTwoNa.Add (na2);
+
+		Na na3 = new Na ();
+		na3.setX (5);
+		na3.setY (5);
+		na3.setZ (5);
+		instantiated = na3.instantiate (naPrefab);
+		instantiated.transform.name = "Na 2_3";
+		na3.setInstantiated (instantiated);
+		listOfLevelTwoNa.Add (na3);
+
+		Na na4 = new Na ();
+		na4.setX (10);
+		na4.setY (2.5F);
+		na4.setZ (5);
+		instantiated = na4.instantiate (naPrefab);
+		instantiated.transform.name = "Na 2_4";
+		na4.setInstantiated (instantiated);
+		listOfLevelTwoNa.Add (na4);
+
+		/*instantiateAndMove (0, 2.5F, 5, naPrefab);
+		instantiateAndMove (5, 0, 5, naPrefab);
+		instantiateAndMove (5, 5, 5, naPrefab);
+		instantiateAndMove (10, 2.5F, 5, naPrefab);*/
+	}
+
+	public void setNextForLevelTwoOfNa(){
+
+		Na na1 = listOfLevelTwoNa [0];
+		Na na2 = listOfLevelTwoNa [1];
+		Na na3 = listOfLevelTwoNa [2];
+		Na na4 = listOfLevelTwoNa [3];
+
+		Cl cl1 = listOfLevelTwoCl [0];
+		Cl cl2 = listOfLevelTwoCl [1];
+		Cl cl3 = listOfLevelTwoCl [2];
+		Cl cl4 = listOfLevelTwoCl [3];
+		Cl cl5 = listOfLevelTwoCl [4];
+
+		na1.getNext ().Add (cl1);
+		na1.getNext ().Add (cl2);
+		na1.getNext ().Add (cl3);
+		na1.drawLinesToNext ();
+
+		na2.getNext ().Add (cl1);
+		na2.getNext ().Add (cl3);
+		na2.getNext ().Add (cl4);
+		na2.drawLinesToNext ();
+
+		na3.getNext ().Add (cl2);
+		na3.getNext ().Add (cl3);
+		na3.getNext ().Add (cl5);
+		na3.drawLinesToNext ();
+
+		na4.getNext ().Add (cl3);
+		na4.getNext ().Add (cl4);
+		na4.getNext ().Add (cl5);
+		na4.drawLinesToNext ();
+	}
+
+	public void createLevelTwoOfCl(GameObject clPrefab){
+		listOfLevelTwoCl = new List<Cl> ();
+
+		Cl cl1 = new Cl ();
+		cl1.setX (0);
+		cl1.setY (0);
+		cl1.setZ (5);
+		GameObject instantiated = cl1.instantiate (clPrefab);
+		instantiated.transform.name = "Cl 2_1";
+		cl1.setInstantiated (instantiated);
+		listOfLevelTwoCl.Add (cl1);
+
+		Cl cl2 = new Cl ();
+		cl2.setX (0);
+		cl2.setY (5);
+		cl2.setZ (5);
+		instantiated = cl2.instantiate (clPrefab);
+		instantiated.transform.name = "Cl 2_2";
+		cl2.setInstantiated (instantiated);
+		listOfLevelTwoCl.Add (cl2);
+
+		Cl cl3 = new Cl ();
+		cl3.setX (5);
+		cl3.setY (2.5F);
+		cl3.setZ (5);
+		instantiated = cl3.instantiate (clPrefab);
+		instantiated.transform.name = "Cl 2_3";
+		cl3.setInstantiated (instantiated);
+		listOfLevelTwoCl.Add (cl3);
+
+		Cl cl4 = new Cl ();
+		cl4.setX (10);
+		cl4.setY (0);
+		cl4.setZ (5);
+		instantiated = cl4.instantiate (clPrefab);
+		instantiated.transform.name = "Cl 2_4";
+		cl4.setInstantiated (instantiated);
+		listOfLevelTwoCl.Add (cl4);
+
+		Cl cl5 = new Cl ();
+		cl5.setX (10);
+		cl5.setY (5);
+		cl5.setZ (5);
+		instantiated = cl5.instantiate (clPrefab);
+		instantiated.transform.name = "Cl 2_5";
+		cl5.setInstantiated (instantiated);
+		listOfLevelTwoCl.Add (cl5);
+
+		/*instantiateAndMove (0, 0, 5, clPrefab);
+		instantiateAndMove (0, 5, 5, clPrefab);
+		instantiateAndMove (5, 2.5F, 5, clPrefab);
+		instantiateAndMove (10, 0, 5, clPrefab);
+		instantiateAndMove (10, 5, 5, clPrefab);*/
+	}
+
+	public void setNextForLevelTwoOfCl(){
+		Na na1 = listOfLevelTwoNa [0];
+		Na na2 = listOfLevelTwoNa [1];
+		Na na3 = listOfLevelTwoNa [2];
+		Na na4 = listOfLevelTwoNa [3];
+
+		Cl cl1 = listOfLevelTwoCl [0];
+		Cl cl2 = listOfLevelTwoCl [1];
+		Cl cl3 = listOfLevelTwoCl [2];
+		Cl cl4 = listOfLevelTwoCl [3];
+		Cl cl5 = listOfLevelTwoCl [4];
+
+		cl1.getNext ().Add (na1);
+		cl1.getNext ().Add (na2);
+		cl1.drawLinesToNext ();
+
+		cl2.getNext ().Add (na1);
+		cl2.getNext ().Add (na3);
+		cl2.drawLinesToNext ();
+
+		cl3.getNext ().Add (na1);
+		cl3.getNext ().Add (na2);
+		cl3.getNext ().Add (na3);
+		cl3.getNext ().Add (na4);
+		cl3.drawLinesToNext ();
+
+
+		cl4.getNext ().Add(na2);
+		cl4.getNext ().Add(na4);
+		cl4.drawLinesToNext ();
+
+		cl5.getNext ().Add (na3);
+		cl5.getNext ().Add (na4);
+		cl5.drawLinesToNext ();
+	}
+
+	public void createLevelThreeOfNa(GameObject naPrefab){
+		listOfLevelThreeNa = new List<Na> ();
+
+		Na na1 = new Na ();
+		na1.setX (0);
+		na1.setY (0);
+		na1.setZ (10);
+		GameObject instantiated = na1.instantiate (naPrefab);
+		instantiated.transform.name = "Na 3_1";
+		na1.setInstantiated (instantiated);
+		listOfLevelThreeNa.Add (na1);
+
+		Na na2 = new Na ();
+		na2.setX (0);
+		na2.setY (5);
+		na2.setZ (10);
+		instantiated = na2.instantiate (naPrefab);
+		instantiated.transform.name = "Na 3_2";
+		na2.setInstantiated (instantiated);
+		listOfLevelThreeNa.Add (na2);
+
+		Na na3 = new Na ();
+		na3.setX (10);
+		na3.setY (0);
+		na3.setZ (10);
+		instantiated = na3.instantiate (naPrefab);
+		instantiated.transform.name = "Na 3_3";
+		na3.setInstantiated (instantiated);
+		listOfLevelThreeNa.Add (na3);
+
+		Na na4 = new Na ();
+		na4.setX (10);
+		na4.setY (5);
+		na4.setZ (10);
+		instantiated = na4.instantiate (naPrefab);
+		instantiated.transform.name = "Na 3_4";
+		na4.setInstantiated (instantiated);
+		listOfLevelThreeNa.Add (na4);
+
+		Na na5 = new Na ();
+		na5.setX (5);
+		na5.setY (2.5F);
+		na5.setZ (10);
+		instantiated = na5.instantiate (naPrefab);
+		instantiated.transform.name = "Na 3_5";
+		na5.setInstantiated (instantiated);
+		listOfLevelThreeNa.Add (na5);
+
+		/*instantiateAndMove(0, 0, 10, naPrefab);
+		instantiateAndMove(0, 5, 10, naPrefab);
+		instantiateAndMove(10, 0, 10, naPrefab);
+		instantiateAndMove(10, 5, 10, naPrefab);
+		instantiateAndMove(5, 2.5F, 10, naPrefab);*/
+	}
+
+	public void setNextForLevelThreeOfNa(){
+		Na na1 = listOfLevelThreeNa [0];
+		Na na2 = listOfLevelThreeNa [1];
+		Na na3 = listOfLevelThreeNa [2];
+		Na na4 = listOfLevelThreeNa [3];
+		Na na5 = listOfLevelThreeNa [4];
+
+		Cl cl1 = listOfLevelThreeCl [0];
+		Cl cl2 = listOfLevelThreeCl [1];
+		Cl cl3 = listOfLevelThreeCl [2];
+		Cl cl4 = listOfLevelThreeCl [3];
+
 		na1.getNext ().Add (cl1);
 		na1.getNext ().Add (cl2);
 		na1.drawLinesToNext ();
@@ -248,20 +581,64 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		na5.getNext ().Add (cl3);
 		na5.getNext ().Add (cl4);
 		na5.drawLinesToNext ();
-
 	}
 
-	public void setNextForLevelOneOfCl(){
-		Cl cl1 = listOfLevelOneCl [0];
-		Cl cl2 = listOfLevelOneCl [1];
-		Cl cl3 = listOfLevelOneCl [2];
-		Cl cl4 = listOfLevelOneCl [3];
+	public void createLevelThreeOfCl(GameObject clPrefab){
+		listOfLevelThreeCl = new List<Cl> ();
 
-		Na na1 = listOfLevelOneNa [0];
-		Na na2 = listOfLevelOneNa [1];
-		Na na3 = listOfLevelOneNa [2];
-		Na na4 = listOfLevelOneNa [3];
-		Na na5 = listOfLevelOneNa [4];
+		Cl cl1 = new Cl ();
+		cl1.setX (0);
+		cl1.setY (2.5F);
+		cl1.setZ (10);
+		GameObject instantiated = cl1.instantiate (clPrefab);
+		instantiated.transform.name = "Cl 3_1";
+		cl1.setInstantiated (instantiated);
+		listOfLevelThreeCl.Add (cl1);
+
+		Cl cl2 = new Cl ();
+		cl2.setX (5);
+		cl2.setY (0);
+		cl2.setZ (10);
+		instantiated = cl2.instantiate (clPrefab);
+		instantiated.transform.name = "Cl 3_2";
+		cl2.setInstantiated (instantiated);
+		listOfLevelThreeCl.Add (cl2);
+
+		Cl cl3 = new Cl ();
+		cl3.setX (5);
+		cl3.setY (5);
+		cl3.setZ (10);
+		instantiated = cl3.instantiate (clPrefab);
+		instantiated.transform.name = "Cl 3_3";
+		cl3.setInstantiated (instantiated);
+		listOfLevelThreeCl.Add (cl3);
+
+		Cl cl4 = new Cl ();
+		cl4.setX (10);
+		cl4.setY (2.5F);
+		cl4.setZ (10);
+		instantiated = cl4.instantiate (clPrefab);
+		instantiated.transform.name = "Cl 3_4";
+		cl4.setInstantiated (instantiated);
+		listOfLevelThreeCl.Add (cl4);
+
+		/*instantiateAndMove (0, 2.5F, 10, clPrefab);
+		instantiateAndMove (5, 0, 10, clPrefab);
+		instantiateAndMove (5, 5, 10, clPrefab);
+		instantiateAndMove (10, 2.5F, 10, clPrefab);*/
+	}
+
+	public void setNextForLevelThreeOfCl(){
+		Na na1 = listOfLevelThreeNa [0];
+		Na na2 = listOfLevelThreeNa [1];
+		Na na3 = listOfLevelThreeNa [2];
+		Na na4 = listOfLevelThreeNa [3];
+		Na na5 = listOfLevelThreeNa [4];
+
+		Cl cl1 = listOfLevelThreeCl [0];
+		Cl cl2 = listOfLevelThreeCl [1];
+		Cl cl3 = listOfLevelThreeCl [2];
+		Cl cl4 = listOfLevelThreeCl [3];
 
 		cl1.getNext ().Add (na1);
 		cl1.getNext ().Add (na2);
@@ -272,41 +649,22 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		cl2.getNext ().Add (na3);
 		cl2.getNext ().Add (na5);
 		cl2.drawLinesToNext ();
-	}
 
-	public void createLevelTwoOfNa(GameObject naPrefab){
-		/*instantiateAndMove (0, 2.5F, 5, naPrefab);
-		instantiateAndMove (5, 0, 5, naPrefab);
-		instantiateAndMove (5, 5, 5, naPrefab);
-		instantiateAndMove (10, 2.5F, 5, naPrefab);*/
-	}
+		cl3.getNext ().Add (na2);
+		cl3.getNext ().Add (na4);
+		cl3.getNext ().Add (na5);
+		cl3.drawLinesToNext ();
 
-	public void createLevelTwoOfCl(GameObject clPrefab){
-		/*instantiateAndMove (0, 0, 5, clPrefab);
-		instantiateAndMove (0, 5, 5, clPrefab);
-		instantiateAndMove (5, 2.5F, 5, clPrefab);
-		instantiateAndMove (10, 0, 5, clPrefab);
-		instantiateAndMove (10, 5, 5, clPrefab);*/
-	}
-
-	public void createLevelThreeOfNa(GameObject naPrefab){
-		/*instantiateAndMove(0, 0, 10, naPrefab);
-		instantiateAndMove(0, 5, 10, naPrefab);
-		instantiateAndMove(10, 0, 10, naPrefab);
-		instantiateAndMove(10, 5, 10, naPrefab);
-		instantiateAndMove(5, 2.5F, 10, naPrefab);*/
-	}
-
-	public void createLevelThreeOfCl(GameObject clPrefab){
-		/*instantiateAndMove (0, 2.5F, 10, clPrefab);
-		instantiateAndMove (5, 0, 10, clPrefab);
-		instantiateAndMove (5, 5, 10, clPrefab);
-		instantiateAndMove (10, 2.5F, 10, clPrefab);*/
+		cl4.getNext ().Add (na3);
+		cl4.getNext ().Add (na4);
+		cl4.getNext ().Add (na5);
+		cl4.drawLinesToNext ();
 	}
 }
 
 class Na : MonoBehaviour{
 	private float x;
+
 	private float y;
 	private float z;
 
@@ -410,23 +768,25 @@ class Na : MonoBehaviour{
 		float cylinderPositionAndScale = ( next.getZ () - getZ () ) / 4;
 
 		Vector3 scale = naCylinder.transform.localScale;
-		scale.z = Vector3.Distance (getInstantiated().transform.position, next.getInstantiated().transform.position) / 4;
+		scale.y = Vector3.Distance (getInstantiated().transform.position, next.getInstantiated().transform.position) / 4;
 
 		naCylinder.transform.localScale = scale;
-		naCylinder.transform.position = new Vector3 ( getX(), (getY() - scale.y), getZ() );
+		naCylinder.transform.position = new Vector3 ( getX(), getY(), (getZ() + scale.y) );
 
+		Vector3 rotation = new Vector3 (90, 0, 0);
+		naCylinder.transform.Rotate (rotation);
 	}
 
 	private void drawLineReverseByZ(Cl next){
-		GameObject clCylinder = Instantiate (getCylinder()) as GameObject;
+		GameObject naCylinder = Instantiate (getCylinder()) as GameObject;
 
 		// All in cylinder is coming from center
 
-		Vector3 scale = clCylinder.transform.localScale;
+		Vector3 scale = naCylinder.transform.localScale;
 		scale.y = Vector3.Distance (getInstantiated().transform.position, next.getInstantiated().transform.position) / 4;
 
-		clCylinder.transform.localScale = scale;
-		clCylinder.transform.position = new Vector3 (getX(), (scale.y * 3), getZ());
+		naCylinder.transform.localScale = scale;
+		naCylinder.transform.position = new Vector3 (getX(), getY(), (getZ() - scale.y));
 	}
 
 	public float getX(){
@@ -563,6 +923,13 @@ class Cl : MonoBehaviour{
 	private void drawLineByZ(Na next){
 		GameObject clCylinder = Instantiate (getCylinder()) as GameObject;
 
+		// All in cylinder is coming from center
+
+		Vector3 scale = clCylinder.transform.localScale;
+		scale.z = Vector3.Distance (getInstantiated().transform.position, next.getInstantiated().transform.position) / 4;
+
+		clCylinder.transform.localScale = scale;
+		clCylinder.transform.position = new Vector3 ( getX(), getY(), (getZ() + scale.z) );
 	}
 
 	private void drawLineReverseByZ(Na next){
@@ -574,7 +941,7 @@ class Cl : MonoBehaviour{
 		scale.y = Vector3.Distance (getInstantiated().transform.position, next.getInstantiated().transform.position) / 4;
 
 		clCylinder.transform.localScale = scale;
-		clCylinder.transform.position = new Vector3 (getX(), (scale.y * 3), getZ());
+		clCylinder.transform.position = new Vector3 (getX(), getY(), (getZ() - scale.y));
 	}
 
 
