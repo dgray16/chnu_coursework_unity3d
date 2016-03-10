@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
+// TODO 
+// 1. White Skybox
+// 2. Hide/Show cylinders button
 
 [RequireComponent(typeof(Camera))]
 public class GhostFreeRoamCamera : MonoBehaviour
@@ -26,68 +28,68 @@ public class GhostFreeRoamCamera : MonoBehaviour
 	private bool moving = false;
 	private bool togglePressed = false;
 
-	/*private void OnEnable()
+	private void OnEnable()
 	{
-		if (cursorToggleAllowed)
-		{
-			Screen.lockCursor = true;
-			Cursor.visible = false;
-		}
+		//if (cursorToggleAllowed)
+		//{
+		//	Screen.lockCursor = true;
+		//	Cursor.visible = false;
+		//}
 	}
 
 	private void Update()
 	{
-		if (allowMovement)
-		{
-			bool lastMoving = moving;
-			Vector3 deltaPosition = Vector3.zero;
+		//if (allowMovement)
+		//{
+		//	bool lastMoving = moving;
+		//	Vector3 deltaPosition = Vector3.zero;
 
-			if (moving)
-				currentSpeed += increaseSpeed * Time.deltaTime;
+		//	if (moving)
+		//		currentSpeed += increaseSpeed * Time.deltaTime;
 
-			moving = false;
+		//	moving = false;
 
-			CheckMove(forwardButton, ref deltaPosition, transform.forward);
-			CheckMove(backwardButton, ref deltaPosition, -transform.forward);
-			CheckMove(rightButton, ref deltaPosition, transform.right);
-			CheckMove(leftButton, ref deltaPosition, -transform.right);
+		//	CheckMove(forwardButton, ref deltaPosition, transform.forward);
+		//	CheckMove(backwardButton, ref deltaPosition, -transform.forward);
+		//	CheckMove(rightButton, ref deltaPosition, transform.right);
+		//	CheckMove(leftButton, ref deltaPosition, -transform.right);
 
-			if (moving)
-			{
-				if (moving != lastMoving)
-					currentSpeed = initialSpeed;
+		//	if (moving)
+		//	{
+		//		if (moving != lastMoving)
+		//			currentSpeed = initialSpeed;
 
-				transform.position += deltaPosition * currentSpeed * Time.deltaTime;
-			}
-			else currentSpeed = 0f;            
-		}
+		//		transform.position += deltaPosition * currentSpeed * Time.deltaTime;
+		//	}
+		//	else currentSpeed = 0f;            
+		//}
 
-		if (allowRotation)
-		{
-			Vector3 eulerAngles = transform.eulerAngles;
-			eulerAngles.x += -Input.GetAxis("Mouse Y") * 359f * cursorSensitivity;
-			eulerAngles.y += Input.GetAxis("Mouse X") * 359f * cursorSensitivity;
-			transform.eulerAngles = eulerAngles;
-		}
+		//if (allowRotation)
+		//{
+		//	Vector3 eulerAngles = transform.eulerAngles;
+		//	eulerAngles.x += -Input.GetAxis("Mouse Y") * 359f * cursorSensitivity;
+		//	eulerAngles.y += Input.GetAxis("Mouse X") * 359f * cursorSensitivity;
+		//	transform.eulerAngles = eulerAngles;
+		//}
 
-		if (cursorToggleAllowed)
-		{
-			if (Input.GetKey(cursorToggleButton))
-			{
-				if (!togglePressed)
-				{
-					togglePressed = true;
-					Screen.lockCursor = !Screen.lockCursor;
-					Cursor.visible = !Cursor.visible;
-				}
-			}
-			else togglePressed = false;
-		}
-		else
-		{
-			togglePressed = false;
-			Cursor.visible = false;
-		}
+		//if (cursorToggleAllowed)
+		//{
+		//	if (Input.GetKey(cursorToggleButton))
+		//	{
+		//		if (!togglePressed)
+		//		{
+		//			togglePressed = true;
+		//			Screen.lockCursor = !Screen.lockCursor;
+		//			Cursor.visible = !Cursor.visible;
+		//		}
+		//	}
+		//	else togglePressed = false;
+		//}
+		//else
+		//{
+		//	togglePressed = false;
+		//	Cursor.visible = false;
+		//}
 	}
 
 	private void CheckMove(KeyCode keyCode, ref Vector3 deltaPosition, Vector3 directionVector)
@@ -97,7 +99,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 			moving = true;
 			deltaPosition += directionVector;
 		}
-	}*/
+	}
 
 	List<Na> listOfLevelOneNa;
 	List<Cl> listOfLevelOneCl;
@@ -323,6 +325,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		cl4.drawLinesToNext ();
 	}
 
+
 	public void createLevelTwoOfNa(GameObject naPrefab){
 		listOfLevelTwoNa = new List<Na> ();
 
@@ -381,24 +384,42 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		Cl cl4 = listOfLevelTwoCl [3];
 		Cl cl5 = listOfLevelTwoCl [4];
 
+		Cl cl1_1 = listOfLevelOneCl [0];
+		Cl cl1_2 = listOfLevelOneCl [1];
+		Cl cl1_3 = listOfLevelOneCl [2];
+		Cl cl1_4 = listOfLevelOneCl [3];
+
+		Cl cl3_1 = listOfLevelThreeCl [0];
+		Cl cl3_2 = listOfLevelThreeCl [1];
+		Cl cl3_3 = listOfLevelThreeCl [2];
+		Cl cl3_4 = listOfLevelThreeCl [3];
+
 		na1.getNext ().Add (cl1);
 		na1.getNext ().Add (cl2);
 		na1.getNext ().Add (cl3);
+		na1.getNext ().Add (cl1_1);
+		na1.getNext ().Add (cl3_1);
 		na1.drawLinesToNext ();
 
 		na2.getNext ().Add (cl1);
 		na2.getNext ().Add (cl3);
 		na2.getNext ().Add (cl4);
+		na2.getNext ().Add (cl1_2);
+		na2.getNext ().Add (cl3_2);
 		na2.drawLinesToNext ();
 
 		na3.getNext ().Add (cl2);
 		na3.getNext ().Add (cl3);
 		na3.getNext ().Add (cl5);
+		na3.getNext ().Add (cl1_3);
+		na3.getNext ().Add (cl3_3);
 		na3.drawLinesToNext ();
 
 		na4.getNext ().Add (cl3);
 		na4.getNext ().Add (cl4);
 		na4.getNext ().Add (cl5);
+		na4.getNext ().Add (cl1_4);
+		na4.getNext ().Add (cl3_4);
 		na4.drawLinesToNext ();
 	}
 
@@ -458,10 +479,26 @@ public class GhostFreeRoamCamera : MonoBehaviour
 	}
 
 	public void setNextForLevelTwoOfCl(){
+
+		// TODO resolve correct coordinates with 5 spheres
+		// now they are in different position ( 0, 1, 2, 3, 4, 5 )
+
 		Na na1 = listOfLevelTwoNa [0];
 		Na na2 = listOfLevelTwoNa [1];
 		Na na3 = listOfLevelTwoNa [2];
 		Na na4 = listOfLevelTwoNa [3];
+
+		Na na1_1 = listOfLevelOneNa [0];
+		Na na1_2 = listOfLevelOneNa [1];
+		Na na1_3 = listOfLevelOneNa [2];
+		Na na1_4 = listOfLevelOneNa [3];
+		Na na1_5 = listOfLevelOneNa [4];
+
+		Na na3_1 = listOfLevelThreeNa [0];
+		Na na3_2 = listOfLevelThreeNa [1];
+		Na na3_3 = listOfLevelThreeNa [2];
+		Na na3_4 = listOfLevelThreeNa [3];
+		Na na3_5 = listOfLevelThreeNa [4];
 
 		Cl cl1 = listOfLevelTwoCl [0];
 		Cl cl2 = listOfLevelTwoCl [1];
@@ -471,27 +508,37 @@ public class GhostFreeRoamCamera : MonoBehaviour
 
 		cl1.getNext ().Add (na1);
 		cl1.getNext ().Add (na2);
+		cl1.getNext ().Add (na1_1);
+		cl1.getNext ().Add (na3_1);
 		cl1.drawLinesToNext ();
 
 		cl2.getNext ().Add (na1);
 		cl2.getNext ().Add (na3);
+		cl2.getNext ().Add (na1_2);
+		cl2.getNext ().Add (na3_2);
 		cl2.drawLinesToNext ();
 
 		cl3.getNext ().Add (na1);
 		cl3.getNext ().Add (na2);
 		cl3.getNext ().Add (na3);
 		cl3.getNext ().Add (na4);
+		cl3.getNext ().Add (na1_5);
+		cl3.getNext ().Add (na3_5);
 		cl3.drawLinesToNext ();
-
 
 		cl4.getNext ().Add(na2);
 		cl4.getNext ().Add(na4);
+		cl4.getNext ().Add (na1_3);
+		cl4.getNext ().Add (na3_3);
 		cl4.drawLinesToNext ();
 
 		cl5.getNext ().Add (na3);
 		cl5.getNext ().Add (na4);
+		cl5.getNext ().Add (na1_4);
+		cl5.getNext ().Add (na3_4);
 		cl5.drawLinesToNext ();
 	}
+
 
 	public void createLevelThreeOfNa(GameObject naPrefab){
 		listOfLevelThreeNa = new List<Na> ();
@@ -560,26 +607,37 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		Cl cl3 = listOfLevelThreeCl [2];
 		Cl cl4 = listOfLevelThreeCl [3];
 
+        Cl cl2_1 = listOfLevelTwoCl[0];
+        Cl cl2_2 = listOfLevelTwoCl[1];
+        Cl cl2_3 = listOfLevelTwoCl[2];
+        Cl cl2_4 = listOfLevelTwoCl[3];
+        Cl cl2_5 = listOfLevelTwoCl[4];
+
 		na1.getNext ().Add (cl1);
 		na1.getNext ().Add (cl2);
+        na1.getNext().Add(cl2_1);
 		na1.drawLinesToNext ();
 
 		na2.getNext ().Add (cl1);
 		na2.getNext ().Add (cl3);
+        na2.getNext().Add(cl2_2);
 		na2.drawLinesToNext ();
 
 		na3.getNext ().Add (cl2);
 		na3.getNext ().Add (cl4);
+        na3.getNext().Add(cl2_4);
 		na3.drawLinesToNext ();
 
 		na4.getNext ().Add (cl3);
 		na4.getNext ().Add (cl4);
+        na4.getNext().Add(cl2_5);
 		na4.drawLinesToNext ();
 
 		na5.getNext ().Add (cl1);
 		na5.getNext ().Add (cl2);
 		na5.getNext ().Add (cl3);
 		na5.getNext ().Add (cl4);
+        na5.getNext().Add(cl2_3);
 		na5.drawLinesToNext ();
 	}
 
@@ -635,6 +693,11 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		Na na4 = listOfLevelThreeNa [3];
 		Na na5 = listOfLevelThreeNa [4];
 
+		Na na2_1 = listOfLevelTwoNa [0];
+		Na na2_2 = listOfLevelTwoNa [1];
+		Na na2_3 = listOfLevelTwoNa [2];
+		Na na2_4 = listOfLevelTwoNa [3];
+
 		Cl cl1 = listOfLevelThreeCl [0];
 		Cl cl2 = listOfLevelThreeCl [1];
 		Cl cl3 = listOfLevelThreeCl [2];
@@ -643,21 +706,25 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		cl1.getNext ().Add (na1);
 		cl1.getNext ().Add (na2);
 		cl1.getNext ().Add (na5);
+		cl1.getNext ().Add (na2_1);
 		cl1.drawLinesToNext ();
 
 		cl2.getNext ().Add (na1);
 		cl2.getNext ().Add (na3);
 		cl2.getNext ().Add (na5);
+        cl2.getNext().Add(na2_2);
 		cl2.drawLinesToNext ();
 
 		cl3.getNext ().Add (na2);
 		cl3.getNext ().Add (na4);
 		cl3.getNext ().Add (na5);
+        cl3.getNext().Add(na2_3);
 		cl3.drawLinesToNext ();
 
 		cl4.getNext ().Add (na3);
 		cl4.getNext ().Add (na4);
 		cl4.getNext ().Add (na5);
+        cl4.getNext().Add(na2_4);
 		cl4.drawLinesToNext ();
 	}
 }
@@ -787,6 +854,9 @@ class Na : MonoBehaviour{
 
 		naCylinder.transform.localScale = scale;
 		naCylinder.transform.position = new Vector3 (getX(), getY(), (getZ() - scale.y));
+
+		Vector3 rotation = new Vector3 (90, 0, 0);
+		naCylinder.transform.Rotate (rotation);
 	}
 
 	public float getX(){
@@ -926,10 +996,13 @@ class Cl : MonoBehaviour{
 		// All in cylinder is coming from center
 
 		Vector3 scale = clCylinder.transform.localScale;
-		scale.z = Vector3.Distance (getInstantiated().transform.position, next.getInstantiated().transform.position) / 4;
+		scale.y = Vector3.Distance (getInstantiated().transform.position, next.getInstantiated().transform.position) / 4;
 
 		clCylinder.transform.localScale = scale;
-		clCylinder.transform.position = new Vector3 ( getX(), getY(), (getZ() + scale.z) );
+		clCylinder.transform.position = new Vector3 ( getX(), getY(), (getZ() + scale.y) );
+
+		Vector3 rotation = new Vector3 (90, 0, 0);
+		clCylinder.transform.Rotate (rotation);
 	}
 
 	private void drawLineReverseByZ(Na next){
@@ -942,6 +1015,9 @@ class Cl : MonoBehaviour{
 
 		clCylinder.transform.localScale = scale;
 		clCylinder.transform.position = new Vector3 (getX(), getY(), (getZ() - scale.y));
+
+		Vector3 rotation = new Vector3 (90, 0, 0);
+		clCylinder.transform.Rotate (rotation);
 	}
 
 
