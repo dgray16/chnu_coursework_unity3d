@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 // TODO 
-// 1. White Skybox
-// 2. Hide/Show cylinders button
+// 1. Hide/Show cylinders button
 
 [RequireComponent(typeof(Camera))]
 public class GhostFreeRoamCamera : MonoBehaviour
@@ -109,6 +109,8 @@ public class GhostFreeRoamCamera : MonoBehaviour
 
 	List<Na> listOfLevelThreeNa;
 	List<Cl> listOfLevelThreeCl;
+
+    private bool connectionStatus = true;
 
 	void Start(){
 		GameObject naPrefab = UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/Na/Na.prefab", typeof(GameObject)) as GameObject;
@@ -727,6 +729,23 @@ public class GhostFreeRoamCamera : MonoBehaviour
         cl4.getNext().Add(na2_4);
 		cl4.drawLinesToNext ();
 	}
+ 
+
+    public void ShowOrHideConnections() {
+
+        GameObject buttonObject = GameObject.Find("connectionsButton");
+                
+        if ( connectionStatus ){
+            // Show connections
+            connectionStatus = false;
+            buttonObject.GetComponentInChildren<Text>().text = "Hide connections";
+        }
+        else {
+            // Hide connections
+            connectionStatus = true;
+            buttonObject.GetComponentInChildren<Text>().text = "Show connections";
+        }
+    }
 }
 
 class Na : MonoBehaviour{
