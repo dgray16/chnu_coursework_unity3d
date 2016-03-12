@@ -30,72 +30,101 @@ public class GhostFreeRoamCamera : MonoBehaviour
 
 	private void OnEnable()
 	{
-		//if (cursorToggleAllowed)
-		//{
-		//	Screen.lockCursor = true;
-		//	Cursor.visible = false;
-		//}
-	}
-
-	private void Update()
-	{
-		//if (allowMovement)
-		//{
-		//	bool lastMoving = moving;
-		//	Vector3 deltaPosition = Vector3.zero;
-
-		//	if (moving)
-		//		currentSpeed += increaseSpeed * Time.deltaTime;
-
-		//	moving = false;
-
-		//	CheckMove(forwardButton, ref deltaPosition, transform.forward);
-		//	CheckMove(backwardButton, ref deltaPosition, -transform.forward);
-		//	CheckMove(rightButton, ref deltaPosition, transform.right);
-		//	CheckMove(leftButton, ref deltaPosition, -transform.right);
-
-		//	if (moving)
-		//	{
-		//		if (moving != lastMoving)
-		//			currentSpeed = initialSpeed;
-
-		//		transform.position += deltaPosition * currentSpeed * Time.deltaTime;
-		//	}
-		//	else currentSpeed = 0f;            
-		//}
-
-		//if (allowRotation)
-		//{
-		//	Vector3 eulerAngles = transform.eulerAngles;
-		//	eulerAngles.x += -Input.GetAxis("Mouse Y") * 359f * cursorSensitivity;
-		//	eulerAngles.y += Input.GetAxis("Mouse X") * 359f * cursorSensitivity;
-		//	transform.eulerAngles = eulerAngles;
-		//}
-
-		//if (cursorToggleAllowed)
-		//{
-		//	if (Input.GetKey(cursorToggleButton))
-		//	{
-		//		if (!togglePressed)
-		//		{
-		//			togglePressed = true;
-		//			Screen.lockCursor = !Screen.lockCursor;
-		//			Cursor.visible = !Cursor.visible;
-		//		}
-		//	}
-		//	else togglePressed = false;
-		//}
-		//else
-		//{
-		//	togglePressed = false;
-		//	Cursor.visible = false;
-		//}
-	}
-
-	private void CheckMove(KeyCode keyCode, ref Vector3 deltaPosition, Vector3 directionVector)
-	{
-		if (Input.GetKey(keyCode))
+		if (cursorToggleAllowed)
 		{
+			Screen.lockCursor = true;
+			Cursor.visible = false;
+		}
+	}
+
+	private void Update(){
+		if (allowMovement)
+		{
+			bool lastMoving = moving;
+			Vector3 deltaPosition = Vector3.zero;
+
+			if (moving)
+				currentSpeed += increaseSpeed * Time.deltaTime;
+
+			moving = false;
+
+			CheckMove(forwardButton, ref deltaPosition, transform.forward);
+			CheckMove(backwardButton, ref deltaPosition, -transform.forward);
+			CheckMove(rightButton, ref deltaPosition, transform.right);
+			CheckMove(leftButton, ref deltaPosition, -transform.right);
+
+			if (moving)
+			{
+				if (moving != lastMoving)
+					currentSpeed = initialSpeed;
+
+				transform.position += deltaPosition * currentSpeed * Time.deltaTime;
+			}
+			else currentSpeed = 0f;            
+		}
+
+		if ( allowRotation ){
+			Vector3 eulerAngles = transform.eulerAngles;
+			eulerAngles.x += -Input.GetAxis("Mouse Y") * 359f * cursorSensitivity;
+			eulerAngles.y += Input.GetAxis("Mouse X") * 359f * cursorSensitivity;
+			transform.eulerAngles = eulerAngles;
+		}
+
+		if ( cursorToggleAllowed ){
+			if ( Input.GetKey(cursorToggleButton) ){
+				if ( !togglePressed ){
+					togglePressed = true;
+					Screen.lockCursor = !Screen.lockCursor;
+					Cursor.visible = !Cursor.visible;
+				}
+			}
+			else togglePressed = false;
+		}
+		else {
+			togglePressed = false;
+			Cursor.visible = false;
+		}
+			
+
+		// Toggle visibility
+		if ( (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl)) && Input.GetKeyDown(KeyCode.H) ) {
+			DisplayOrHideConnections ();
+		}
+			
+	}
+
+	private bool isConnectionVisible = true;
+
+	public void DisplayOrHideConnections() {
+
+		GameObject buttonObject = GameObject.Find("connectionsButton");
+
+		GameObject[] respawnedObjects = GameObject.FindGameObjectsWithTag("Respawn");
+
+
+		if ( isConnectionVisible ){
+			// Hide connections
+			isConnectionVisible = false;
+			buttonObject.GetComponentInChildren<Text>().text = "Display connections ( Ctrl + H to toggle )";
+
+			foreach ( GameObject respawnedObject in respawnedObjects )
+				if ( respawnedObject.name == ("ClCylinder(Clone)") ||  respawnedObject.name == ("NaCylinder(Clone)") ) 
+					respawnedObject.GetComponent<Renderer> ().enabled = false;
+		}
+		else if ( !isConnectionVisible ) {
+			// Display connections
+			isConnectionVisible = true;
+			buttonObject.GetComponentInChildren<Text>().text = "Hide connections ( Ctrl + H to toggle )";
+
+			foreach ( GameObject respawnedObject in respawnedObjects )
+				if ( respawnedObject.name == ("ClCylinder(Clone)") || respawnedObject.name == ("NaCylinder(Clone)") ) 
+					respawnedObject.GetComponent<Renderer> ().enabled = true;
+		}
+
+	}
+
+	private void CheckMove(KeyCode keyCode, ref Vector3 deltaPosition, Vector3 directionVector){
+		if ( Input.GetKey(keyCode) ){
 			moving = true;
 			deltaPosition += directionVector;
 		}
@@ -110,7 +139,6 @@ public class GhostFreeRoamCamera : MonoBehaviour
 	List<Na> listOfLevelThreeNa;
 	List<Cl> listOfLevelThreeCl;
 
-    private bool connectionStatus = true;
 
 	void Start(){
 		GameObject naPrefab = UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/Na/Na.prefab", typeof(GameObject)) as GameObject;
@@ -729,24 +757,8 @@ public class GhostFreeRoamCamera : MonoBehaviour
         cl4.getNext().Add(na2_4);
 		cl4.drawLinesToNext ();
 	}
- 
-
-    public void ShowOrHideConnections() {
-
-        GameObject buttonObject = GameObject.Find("connectionsButton");
-                
-        if ( connectionStatus ){
-            // Show connections
-            connectionStatus = false;
-            buttonObject.GetComponentInChildren<Text>().text = "Hide connections";
-        }
-        else {
-            // Hide connections
-            connectionStatus = true;
-            buttonObject.GetComponentInChildren<Text>().text = "Show connections";
-        }
-    }
 }
+
 
 class Na : MonoBehaviour{
 	private float x;
@@ -768,6 +780,7 @@ class Na : MonoBehaviour{
 	public GameObject instantiate(GameObject prefab){
 		GameObject naObject = Instantiate(prefab) as GameObject;
 		naObject.transform.position = new Vector3 (x, y, z);
+		naObject.tag = "Respawn";
 		return naObject;
 	}
 
@@ -936,6 +949,7 @@ class Cl : MonoBehaviour{
 	public GameObject instantiate(GameObject prefab){
 		GameObject clObject = Instantiate(prefab) as GameObject;
 		clObject.transform.position = new Vector3 (x, y, z);
+		clObject.tag = "Respawn";
 		return clObject;
 	}
 
