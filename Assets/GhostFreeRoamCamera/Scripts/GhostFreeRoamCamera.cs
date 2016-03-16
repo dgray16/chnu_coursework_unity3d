@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 // TODO 
-// 1. Hide/Show cylinders button
+// 1. Sphere Shaking
 
 [RequireComponent(typeof(Camera))]
 public class GhostFreeRoamCamera : MonoBehaviour
