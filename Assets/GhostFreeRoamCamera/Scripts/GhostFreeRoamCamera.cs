@@ -7,8 +7,26 @@ using UnityEngine.UI;
 // 1. Sphere Shaking
 
 [RequireComponent(typeof(Camera))]
-public class GhostFreeRoamCamera : MonoBehaviour
-{
+public class GhostFreeRoamCamera : MonoBehaviour {
+
+	public GameObject shakingObj = null;
+
+	public float x;
+	public float y;
+	public float z;
+
+	IEnumerator shake(){
+		
+		shakingObj.transform.position = new Vector3(
+				Random.Range( (x + 1F), (x - 1F)),
+				Random.Range( (y + 1F), (y - 1F)),
+				Random.Range( (z + 1F), (z - 1F))
+			);
+			yield return new WaitForSeconds(30);
+
+
+	}
+	
 	public float initialSpeed = 10f;
 	public float increaseSpeed = 1.25f;
 
@@ -28,18 +46,15 @@ public class GhostFreeRoamCamera : MonoBehaviour
 	private bool moving = false;
 	private bool togglePressed = false;
 
-	private void OnEnable()
-	{
-		if (cursorToggleAllowed)
-		{
+	private void OnEnable() {
+		if (cursorToggleAllowed) {
 			Screen.lockCursor = true;
 			Cursor.visible = false;
 		}
 	}
 
-	private void Update(){
-		if (allowMovement)
-		{
+	private void Update() {
+		if (allowMovement) {
 			bool lastMoving = moving;
 			Vector3 deltaPosition = Vector3.zero;
 
@@ -53,8 +68,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 			CheckMove(rightButton, ref deltaPosition, transform.right);
 			CheckMove(leftButton, ref deltaPosition, -transform.right);
 
-			if (moving)
-			{
+			if (moving) {
 				if (moving != lastMoving)
 					currentSpeed = initialSpeed;
 
@@ -63,15 +77,15 @@ public class GhostFreeRoamCamera : MonoBehaviour
 			else currentSpeed = 0f;            
 		}
 
-		if ( allowRotation ){
+		if ( allowRotation ) {
 			Vector3 eulerAngles = transform.eulerAngles;
 			eulerAngles.x += -Input.GetAxis("Mouse Y") * 359f * cursorSensitivity;
 			eulerAngles.y += Input.GetAxis("Mouse X") * 359f * cursorSensitivity;
 			transform.eulerAngles = eulerAngles;
 		}
 
-		if ( cursorToggleAllowed ){
-			if ( Input.GetKey(cursorToggleButton) ){
+		if ( cursorToggleAllowed ) {
+			if ( Input.GetKey(cursorToggleButton) ) {
 				if ( !togglePressed ){
 					togglePressed = true;
 					Screen.lockCursor = !Screen.lockCursor;
@@ -90,6 +104,11 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		if ( (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl)) && Input.GetKeyDown(KeyCode.H) ) {
 			DisplayOrHideConnections ();
 		}
+
+		/*if (shakingObj != null)
+			StartCoroutine ("shake");*/
+
+
 			
 	}
 
@@ -102,7 +121,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		GameObject[] respawnedObjects = GameObject.FindGameObjectsWithTag("Respawn");
 
 
-		if ( isConnectionVisible ){
+		if ( isConnectionVisible ) {
 			// Hide connections
 			isConnectionVisible = false;
 			buttonObject.GetComponentInChildren<Text>().text = "Display connections ( Ctrl + H to toggle )";
@@ -124,7 +143,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 	}
 
 	private void CheckMove(KeyCode keyCode, ref Vector3 deltaPosition, Vector3 directionVector){
-		if ( Input.GetKey(keyCode) ){
+		if ( Input.GetKey(keyCode) ) {
 			moving = true;
 			deltaPosition += directionVector;
 		}
@@ -140,7 +159,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 	List<Cl> listOfLevelThreeCl;
 
 
-	void Start(){
+	void Start() {
 		GameObject naPrefab = UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/Na/Na.prefab", typeof(GameObject)) as GameObject;
 		GameObject clPrefab = UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/Cl/Cl.prefab", typeof(GameObject)) as GameObject;
 
@@ -163,7 +182,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		setNextForLevelThreeOfCl ();
 	}
 
-	public void createLevelOneOfNa(GameObject naPrefab){
+	public void createLevelOneOfNa(GameObject naPrefab) {
 		listOfLevelOneNa = new List<Na> ();
 
 		Na na1 = new Na ();
@@ -174,6 +193,13 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		instantiated.transform.name = "Na 1_1";
 		na1.setInstantiated (instantiated);
 		listOfLevelOneNa.Add (na1);
+
+		shakingObj = na1.getInstantiated();
+		x = shakingObj.transform.position.x;
+		y = shakingObj.transform.position.y;
+		z = shakingObj.transform.position.z;
+
+		na1.shakingInvocation (1F);
 
 		Na na2 = new Na ();
 		na2.setX (0);
@@ -760,7 +786,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 }
 
 
-class Na : MonoBehaviour{
+class Na : MonoBehaviour {
 	private float x;
 
 	private float y;
@@ -773,7 +799,7 @@ class Na : MonoBehaviour{
 	private GameObject naCylinder = UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/Na/NaCylinder.prefab",
 		typeof(GameObject)) as GameObject;
 
-	public Na(){
+	public Na() {
 		next = new List<Cl> ();
 	}
 
@@ -784,7 +810,7 @@ class Na : MonoBehaviour{
 		return naObject;
 	}
 
-	public void drawLinesToNext(){
+	public void drawLinesToNext() {
 		foreach (Cl item in next) {
 			float newX = x - item.getX ();
 			float newY = y - item.getY ();
@@ -804,7 +830,7 @@ class Na : MonoBehaviour{
 		}
 	}
 
-	private void drawLineByX(Cl next){
+	private void drawLineByX(Cl next) {
 		GameObject naCylinder = Instantiate (getCylinder()) as GameObject;
 
 		// All in cylinder is coming from center
@@ -820,7 +846,7 @@ class Na : MonoBehaviour{
 		naCylinder.transform.Rotate (rotation);
 	}
 
-	private void drawLineReverseByX(Cl next){
+	private void drawLineReverseByX(Cl next) {
 		GameObject naCylinder = Instantiate (getCylinder()) as GameObject;
 
 		// All in cylinder is coming from center
@@ -835,7 +861,7 @@ class Na : MonoBehaviour{
 		naCylinder.transform.Rotate (rotation);
 	}
 
-	private void drawLineByY(Cl next){
+	private void drawLineByY(Cl next) {
 		GameObject naCylinder = Instantiate (getCylinder()) as GameObject;
 
 		// All in cylinder is coming from center
@@ -848,7 +874,7 @@ class Na : MonoBehaviour{
 		naCylinder.transform.position = new Vector3 ( getX(), (getY() + scale.y), getZ() );
 	}
 
-	private void drawLineReverseByY(Cl next){
+	private void drawLineReverseByY(Cl next) {
 		GameObject naCylinder = Instantiate (getCylinder()) as GameObject;
 
 		// All in cylinder is coming from center
@@ -876,7 +902,7 @@ class Na : MonoBehaviour{
 		naCylinder.transform.Rotate (rotation);
 	}
 
-	private void drawLineReverseByZ(Cl next){
+	private void drawLineReverseByZ(Cl next) {
 		GameObject naCylinder = Instantiate (getCylinder()) as GameObject;
 
 		// All in cylinder is coming from center
@@ -891,45 +917,59 @@ class Na : MonoBehaviour{
 		naCylinder.transform.Rotate (rotation);
 	}
 
-	public float getX(){
+	void shaking() {
+		
+		this.instantiatedObj.transform.position = new Vector3(
+			Random.Range( (getX() + 1F), (getX() - 1F)),
+			Random.Range( (getY() + 1F), (getY() - 1F)),
+			Random.Range( (getY() + 1F), (getY() - 1F))
+		);
+	}
+
+	public void shakingInvocation(float delay) {
+		// TODO test it
+		Invoke ("shaking", delay);
+	}
+
+	public float getX() {
 		return x;
 	}
-	public void setX(float value){
+	public void setX(float value) {
 		this.x = value;
 	}
 
-	public float getY(){
+	public float getY() {
 		return y;
 	}
-	public void setY(float value){
+	public void setY(float value) {
 		this.y = value;
 	}
 
-	public float getZ(){
+	public float getZ() {
 		return z;
 	}
-	public void setZ(float value){
+	public void setZ(float value) {
 		this.z = value;
 	}
 
-	public List<Cl> getNext(){
+	public List<Cl> getNext() {
 		return next;
 	}
 
-	public GameObject getCylinder(){
+	public GameObject getCylinder() {
 		return naCylinder;
 	}
 
-	public GameObject getInstantiated(){
+	public GameObject getInstantiated() {
 		return instantiatedObj;
 	}
 
-	public void setInstantiated(GameObject obj){
+	public void setInstantiated(GameObject obj) {
 		this.instantiatedObj = obj;
 	}
 }
 
-class Cl : MonoBehaviour{
+class Cl : MonoBehaviour {
 	private float x;
 	private float y;
 	private float z;
@@ -942,18 +982,18 @@ class Cl : MonoBehaviour{
 		typeof(GameObject)) as GameObject;
 
 
-	public Cl(){
+	public Cl() {
 		next = new List<Na> ();
 	}
 
-	public GameObject instantiate(GameObject prefab){
+	public GameObject instantiate(GameObject prefab) {
 		GameObject clObject = Instantiate(prefab) as GameObject;
 		clObject.transform.position = new Vector3 (x, y, z);
 		clObject.tag = "Respawn";
 		return clObject;
 	}
 
-	public void drawLinesToNext(){
+	public void drawLinesToNext() {
 		foreach (Na item in next) {
 			float newX = x - item.getX ();
 			float newY = y - item.getY ();
@@ -969,7 +1009,7 @@ class Cl : MonoBehaviour{
 		}
 	}
 
-	private void drawLineByX(Na next){
+	private void drawLineByX(Na next) {
 		GameObject clCylinder = Instantiate (getCylinder()) as GameObject;
 
 		// All in cylinder is coming from center
@@ -984,7 +1024,7 @@ class Cl : MonoBehaviour{
 		clCylinder.transform.Rotate (rotation);
 	}
 
-	private void drawLineReverseByX(Na next){
+	private void drawLineReverseByX(Na next) {
 		GameObject clCylinder = Instantiate (getCylinder()) as GameObject;
 
 		// All in cylinder is coming from center
@@ -999,7 +1039,7 @@ class Cl : MonoBehaviour{
 		clCylinder.transform.Rotate (rotation);
 	}
 
-	private void drawLineByY(Na next){
+	private void drawLineByY(Na next) {
 		GameObject clCylinder = Instantiate (getCylinder()) as GameObject;
 
 		// All in cylinder is coming from center
@@ -1011,7 +1051,7 @@ class Cl : MonoBehaviour{
 		clCylinder.transform.position = new Vector3 (getX(), (getY() + scale.y), getZ());
 	}
 
-	private void drawLineReverseByY(Na next){
+	private void drawLineReverseByY(Na next) {
 		GameObject clCylinder = Instantiate (getCylinder()) as GameObject;
 
 		// All in cylinder is coming from center
@@ -1023,7 +1063,7 @@ class Cl : MonoBehaviour{
 		clCylinder.transform.position = new Vector3 (getX(), (getY() - scale.y), getZ());
 	}
 
-	private void drawLineByZ(Na next){
+	private void drawLineByZ(Na next) {
 		GameObject clCylinder = Instantiate (getCylinder()) as GameObject;
 
 		// All in cylinder is coming from center
@@ -1038,7 +1078,7 @@ class Cl : MonoBehaviour{
 		clCylinder.transform.Rotate (rotation);
 	}
 
-	private void drawLineReverseByZ(Na next){
+	private void drawLineReverseByZ(Na next) {
 		GameObject clCylinder = Instantiate (getCylinder()) as GameObject;
 
 		// All in cylinder is coming from center
@@ -1054,40 +1094,40 @@ class Cl : MonoBehaviour{
 	}
 
 
-	public float getX(){
+	public float getX() {
 		return x;
 	}
-	public void setX(float value){
+	public void setX(float value) {
 		this.x = value;
 	}
 
-	public float getY(){
+	public float getY() {
 		return y;
 	}
-	public void setY(float value){
+	public void setY(float value) {
 		this.y = value;
 	}
 
-	public float getZ(){
+	public float getZ() {
 		return z;
 	}
-	public void setZ(float value){
+	public void setZ(float value) {
 		this.z = value;
 	}
 
-	public List<Na> getNext(){
+	public List<Na> getNext() {
 		return next;
 	}
 
-	public GameObject getCylinder(){
+	public GameObject getCylinder() {
 		return clCylinder;
 	}
 
-	public GameObject getInstantiated(){
+	public GameObject getInstantiated() {
 		return instantiatedObj;
 	}
 
-	public void setInstantiated(GameObject obj){
+	public void setInstantiated(GameObject obj) {
 		this.instantiatedObj = obj;
 	}
 
