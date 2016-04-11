@@ -17,7 +17,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
     private GameObject[] respawnedObjects;
     private bool isShakingAllowedByShaker = false;
     private bool isShakingAllowedByConnection = false;
-    private bool isConnectionAllowed = true;
+    
 
 
     public float initialSpeed = 10f;
@@ -111,45 +111,109 @@ public class GhostFreeRoamCamera : MonoBehaviour
        
 
         // Toggle shakig
-        if ((Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl)) && Input.GetKeyDown(KeyCode.M)) {
-            if (isShakingAllowedByConnection)
-            {
-                if (isShakingAllowedByShaker)
-                {
-                    returnSpheresToOriginalPosition();
-                    isShakingAllowedByShaker = false;
-                }
-                else {
-                    respawnedObjects = GameObject.FindGameObjectsWithTag("Respawn");
-
-                    foreach (GameObject spawnedObject in respawnedObjects)
-                        if (spawnedObject.name == ("Na 1_1")) shakingObj = spawnedObject;
-                    isShakingAllowedByShaker = true;
-                }
-                
-
-            }
-            
-                // TODO return all objets to start point
-                
-            
+        if ((Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl)) && Input.GetKeyDown(KeyCode.L)) {
+            toggleShaking();
         }
 
         if (isShakingAllowedByShaker) {
-            // TODO proceed with all objects
-            Na na = listOfLevelOneNa[0];
-            float x1 = na.getX() - 0.1f;
-            float x2 = na.getX() + 0.1f;
 
-            float y1 = na.getY() - 0.1f;
-            float y2 = na.getY() + 0.1f;
+            listOfLevelOneNa.ForEach(item => {
+                float x1 = item.getX() - 0.1f;
+                float x2 = item.getX() + 0.1f;
 
-            float z1 = na.getZ() - 0.1f;
-            float z2 = na.getZ() + 0.1f;
-            shakingObj.transform.position = new Vector3(Random.Range(x1, x2), Random.Range(y1, y2), Random.Range(z1, z2));
+                float y1 = item.getY() - 0.1f;
+                float y2 = item.getY() + 0.1f;
+
+                float z1 = item.getZ() - 0.1f;
+                float z2 = item.getZ() + 0.1f;
+                item.getInstantiated().transform.position = new Vector3(Random.Range(x1, x2), Random.Range(y1, y2), Random.Range(z1, z2));
+            });
+
+            listOfLevelTwoNa.ForEach(item => {
+                float x1 = item.getX() - 0.1f;
+                float x2 = item.getX() + 0.1f;
+
+                float y1 = item.getY() - 0.1f;
+                float y2 = item.getY() + 0.1f;
+
+                float z1 = item.getZ() - 0.1f;
+                float z2 = item.getZ() + 0.1f;
+                item.getInstantiated().transform.position = new Vector3(Random.Range(x1, x2), Random.Range(y1, y2), Random.Range(z1, z2));
+            });
+
+            listOfLevelThreeNa.ForEach(item => {
+                float x1 = item.getX() - 0.1f;
+                float x2 = item.getX() + 0.1f;
+
+                float y1 = item.getY() - 0.1f;
+                float y2 = item.getY() + 0.1f;
+
+                float z1 = item.getZ() - 0.1f;
+                float z2 = item.getZ() + 0.1f;
+                item.getInstantiated().transform.position = new Vector3(Random.Range(x1, x2), Random.Range(y1, y2), Random.Range(z1, z2));
+            });
+
+
+            listOfLevelOneCl.ForEach(item => {
+                float x1 = item.getX() - 0.1f;
+                float x2 = item.getX() + 0.1f;
+
+                float y1 = item.getY() - 0.1f;
+                float y2 = item.getY() + 0.1f;
+
+                float z1 = item.getZ() - 0.1f;
+                float z2 = item.getZ() + 0.1f;
+                item.getInstantiated().transform.position = new Vector3(Random.Range(x1, x2), Random.Range(y1, y2), Random.Range(z1, z2));
+            });
+
+            listOfLevelTwoCl.ForEach(item => {
+                float x1 = item.getX() - 0.1f;
+                float x2 = item.getX() + 0.1f;
+
+                float y1 = item.getY() - 0.1f;
+                float y2 = item.getY() + 0.1f;
+
+                float z1 = item.getZ() - 0.1f;
+                float z2 = item.getZ() + 0.1f;
+                item.getInstantiated().transform.position = new Vector3(Random.Range(x1, x2), Random.Range(y1, y2), Random.Range(z1, z2));
+            });
+
+            listOfLevelThreeCl.ForEach(item => {
+                float x1 = item.getX() - 0.1f;
+                float x2 = item.getX() + 0.1f;
+
+                float y1 = item.getY() - 0.1f;
+                float y2 = item.getY() + 0.1f;
+
+                float z1 = item.getZ() - 0.1f;
+                float z2 = item.getZ() + 0.1f;
+                item.getInstantiated().transform.position = new Vector3(Random.Range(x1, x2), Random.Range(y1, y2), Random.Range(z1, z2));
+            });
         }
-        
 
+    }
+
+    public void toggleShaking() {
+        if (isShakingAllowedByConnection)
+        {
+            GameObject buttonObject = GameObject.Find("shakingButton");
+
+            if (isShakingAllowedByShaker)
+            {
+                buttonObject.GetComponentInChildren<Text>().text = "Enable shaking ( Ctrl + L to toggle )";
+                isShakingAllowedByShaker = false;
+                returnSpheresToOriginalPosition();
+            }
+            else {
+                buttonObject.GetComponentInChildren<Text>().text = "Disable shaking ( Ctrl + L to toggle )";
+
+                respawnedObjects = GameObject.FindGameObjectsWithTag("Respawn");
+
+                foreach (GameObject spawnedObject in respawnedObjects)
+                    if (spawnedObject.name == ("Na 1_1")) shakingObj = spawnedObject;
+                isShakingAllowedByShaker = true;
+            }
+        }
     }
 
     private bool isConnectionVisible = true;
@@ -193,7 +257,13 @@ public class GhostFreeRoamCamera : MonoBehaviour
     }
 
     private void returnSpheresToOriginalPosition() {
-        // TODO
+        listOfLevelOneNa.ForEach(item => item.getInstantiated().transform.position = new Vector3(item.getX(), item.getY(), item.getZ()));
+        listOfLevelTwoNa.ForEach(item => item.getInstantiated().transform.position = new Vector3(item.getX(), item.getY(), item.getZ()));
+        listOfLevelThreeNa.ForEach(item => item.getInstantiated().transform.position = new Vector3(item.getX(), item.getY(), item.getZ()));
+
+        listOfLevelOneCl.ForEach(item => item.getInstantiated().transform.position = new Vector3(item.getX(), item.getY(), item.getZ()));
+        listOfLevelTwoCl.ForEach(item => item.getInstantiated().transform.position = new Vector3(item.getX(), item.getY(), item.getZ()));
+        listOfLevelThreeCl.ForEach(item => item.getInstantiated().transform.position = new Vector3(item.getX(), item.getY(), item.getZ()));
     }
 
     private void CheckMove(KeyCode keyCode, ref Vector3 deltaPosition, Vector3 directionVector)
@@ -243,7 +313,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
     {
         listOfLevelOneNa = new List<Na>();
 
-        Na na1 = new Na();
+        Na na1 = ScriptableObject.CreateInstance<Na>();
         na1.setX(0);
         na1.setY(0);
         na1.setZ(0);
@@ -252,7 +322,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
         na1.setInstantiated(instantiated);
         listOfLevelOneNa.Add(na1);
 
-        Na na2 = new Na();
+        Na na2 = ScriptableObject.CreateInstance<Na>();
         na2.setX(0);
         na2.setY(5);
         na2.setZ(0);
@@ -261,7 +331,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
         na2.setInstantiated(instantiated);
         listOfLevelOneNa.Add(na2);
 
-        Na na3 = new Na();
+        Na na3 = ScriptableObject.CreateInstance<Na>();
         na3.setX(10);
         na3.setY(0);
         na3.setZ(0);
@@ -270,7 +340,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
         na3.setInstantiated(instantiated);
         listOfLevelOneNa.Add(na3);
 
-        Na na4 = new Na();
+        Na na4 = ScriptableObject.CreateInstance<Na>();
         na4.setX(10);
         na4.setY(5);
         na4.setZ(0);
@@ -279,7 +349,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
         na4.setInstantiated(instantiated);
         listOfLevelOneNa.Add(na4);
 
-        Na na5 = new Na();
+        Na na5 = ScriptableObject.CreateInstance<Na>();
         na5.setX(5);
         na5.setY(2.5F);
         na5.setZ(0);
@@ -299,7 +369,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
     {
         listOfLevelOneCl = new List<Cl>();
 
-        Cl cl1 = new Cl();
+        Cl cl1 = ScriptableObject.CreateInstance<Cl>();
         cl1.setX(0);
         cl1.setY(2.5F);
         cl1.setZ(0);
@@ -308,7 +378,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
         cl1.setInstantiated(instantiated);
         listOfLevelOneCl.Add(cl1);
 
-        Cl cl2 = new Cl();
+        Cl cl2 = ScriptableObject.CreateInstance<Cl>();
         cl2.setX(5);
         cl2.setY(0);
         cl2.setZ(0);
@@ -317,7 +387,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
         cl2.setInstantiated(instantiated);
         listOfLevelOneCl.Add(cl2);
 
-        Cl cl3 = new Cl();
+        Cl cl3 = ScriptableObject.CreateInstance<Cl>();
         cl3.setX(5);
         cl3.setY(5);
         cl3.setZ(0);
@@ -326,7 +396,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
         cl3.setInstantiated(instantiated);
         listOfLevelOneCl.Add(cl3);
 
-        Cl cl4 = new Cl();
+        Cl cl4 = ScriptableObject.CreateInstance<Cl>();
         cl4.setX(10);
         cl4.setY(2.5F);
         cl4.setZ(0);
@@ -440,7 +510,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
     {
         listOfLevelTwoNa = new List<Na>();
 
-        Na na1 = new Na();
+        Na na1 = ScriptableObject.CreateInstance<Na>();
         na1.setX(0);
         na1.setY(2.5F);
         na1.setZ(5);
@@ -449,7 +519,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
         na1.setInstantiated(instantiated);
         listOfLevelTwoNa.Add(na1);
 
-        Na na2 = new Na();
+        Na na2 = ScriptableObject.CreateInstance<Na>();
         na2.setX(5);
         na2.setY(0);
         na2.setZ(5);
@@ -458,7 +528,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
         na2.setInstantiated(instantiated);
         listOfLevelTwoNa.Add(na2);
 
-        Na na3 = new Na();
+        Na na3 = ScriptableObject.CreateInstance<Na>();
         na3.setX(5);
         na3.setY(5);
         na3.setZ(5);
@@ -467,7 +537,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
         na3.setInstantiated(instantiated);
         listOfLevelTwoNa.Add(na3);
 
-        Na na4 = new Na();
+        Na na4 = ScriptableObject.CreateInstance<Na>();
         na4.setX(10);
         na4.setY(2.5F);
         na4.setZ(5);
@@ -539,7 +609,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
     {
         listOfLevelTwoCl = new List<Cl>();
 
-        Cl cl1 = new Cl();
+        Cl cl1 = ScriptableObject.CreateInstance<Cl>();
         cl1.setX(0);
         cl1.setY(0);
         cl1.setZ(5);
@@ -548,7 +618,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
         cl1.setInstantiated(instantiated);
         listOfLevelTwoCl.Add(cl1);
 
-        Cl cl2 = new Cl();
+        Cl cl2 = ScriptableObject.CreateInstance<Cl>();
         cl2.setX(0);
         cl2.setY(5);
         cl2.setZ(5);
@@ -557,7 +627,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
         cl2.setInstantiated(instantiated);
         listOfLevelTwoCl.Add(cl2);
 
-        Cl cl3 = new Cl();
+        Cl cl3 = ScriptableObject.CreateInstance<Cl>();
         cl3.setX(5);
         cl3.setY(2.5F);
         cl3.setZ(5);
@@ -566,7 +636,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
         cl3.setInstantiated(instantiated);
         listOfLevelTwoCl.Add(cl3);
 
-        Cl cl4 = new Cl();
+        Cl cl4 = ScriptableObject.CreateInstance<Cl>();
         cl4.setX(10);
         cl4.setY(0);
         cl4.setZ(5);
@@ -575,7 +645,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
         cl4.setInstantiated(instantiated);
         listOfLevelTwoCl.Add(cl4);
 
-        Cl cl5 = new Cl();
+        Cl cl5 = ScriptableObject.CreateInstance<Cl>();
         cl5.setX(10);
         cl5.setY(5);
         cl5.setZ(5);
@@ -658,7 +728,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
     {
         listOfLevelThreeNa = new List<Na>();
 
-        Na na1 = new Na();
+        Na na1 = ScriptableObject.CreateInstance<Na>();
         na1.setX(0);
         na1.setY(0);
         na1.setZ(10);
@@ -667,7 +737,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
         na1.setInstantiated(instantiated);
         listOfLevelThreeNa.Add(na1);
 
-        Na na2 = new Na();
+        Na na2 = ScriptableObject.CreateInstance<Na>();
         na2.setX(0);
         na2.setY(5);
         na2.setZ(10);
@@ -676,7 +746,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
         na2.setInstantiated(instantiated);
         listOfLevelThreeNa.Add(na2);
 
-        Na na3 = new Na();
+        Na na3 = ScriptableObject.CreateInstance<Na>();
         na3.setX(10);
         na3.setY(0);
         na3.setZ(10);
@@ -685,7 +755,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
         na3.setInstantiated(instantiated);
         listOfLevelThreeNa.Add(na3);
 
-        Na na4 = new Na();
+        Na na4 = ScriptableObject.CreateInstance<Na>();
         na4.setX(10);
         na4.setY(5);
         na4.setZ(10);
@@ -694,7 +764,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
         na4.setInstantiated(instantiated);
         listOfLevelThreeNa.Add(na4);
 
-        Na na5 = new Na();
+        Na na5 = ScriptableObject.CreateInstance<Na>();
         na5.setX(5);
         na5.setY(2.5F);
         na5.setZ(10);
@@ -761,7 +831,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
     {
         listOfLevelThreeCl = new List<Cl>();
 
-        Cl cl1 = new Cl();
+        Cl cl1 = ScriptableObject.CreateInstance<Cl>();
         cl1.setX(0);
         cl1.setY(2.5F);
         cl1.setZ(10);
@@ -770,7 +840,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
         cl1.setInstantiated(instantiated);
         listOfLevelThreeCl.Add(cl1);
 
-        Cl cl2 = new Cl();
+        Cl cl2 = ScriptableObject.CreateInstance<Cl>();
         cl2.setX(5);
         cl2.setY(0);
         cl2.setZ(10);
@@ -779,7 +849,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
         cl2.setInstantiated(instantiated);
         listOfLevelThreeCl.Add(cl2);
 
-        Cl cl3 = new Cl();
+        Cl cl3 = ScriptableObject.CreateInstance<Cl>();
         cl3.setX(5);
         cl3.setY(5);
         cl3.setZ(10);
@@ -788,7 +858,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
         cl3.setInstantiated(instantiated);
         listOfLevelThreeCl.Add(cl3);
 
-        Cl cl4 = new Cl();
+        Cl cl4 = ScriptableObject.CreateInstance<Cl>();
         cl4.setX(10);
         cl4.setY(2.5F);
         cl4.setZ(10);
@@ -847,11 +917,10 @@ public class GhostFreeRoamCamera : MonoBehaviour
     }
 }
 
-
-class Na : MonoBehaviour
+// Inherit from ScriptableObject because of warnings of: new + MonoBehaviour
+class Na : ScriptableObject
 {
     private float x;
-
     private float y;
     private float z;
 
@@ -902,7 +971,6 @@ class Na : MonoBehaviour
         GameObject naCylinder = Instantiate(getCylinder()) as GameObject;
 
         // All in cylinder is coming from center
-        float cylinderPositionAndScale = (next.getX() - getX()) / 4;
 
         Vector3 scale = naCylinder.transform.localScale;
         scale.y = Vector3.Distance(getInstantiated().transform.position, next.getInstantiated().transform.position) / 4;
@@ -935,7 +1003,6 @@ class Na : MonoBehaviour
         GameObject naCylinder = Instantiate(getCylinder()) as GameObject;
 
         // All in cylinder is coming from center
-        float cylinderPositionAndScale = (next.getY() - getY()) / 4;
 
         Vector3 scale = naCylinder.transform.localScale;
         scale.y = Vector3.Distance(getInstantiated().transform.position, next.getInstantiated().transform.position) / 4;
@@ -962,7 +1029,6 @@ class Na : MonoBehaviour
         GameObject naCylinder = Instantiate(getCylinder()) as GameObject;
 
         // All in cylinder is coming from center
-        float cylinderPositionAndScale = (next.getZ() - getZ()) / 4;
 
         Vector3 scale = naCylinder.transform.localScale;
         scale.y = Vector3.Distance(getInstantiated().transform.position, next.getInstantiated().transform.position) / 4;
@@ -990,6 +1056,8 @@ class Na : MonoBehaviour
         naCylinder.transform.Rotate(rotation);
     }
 
+    // Attention! These getters are taking start values of spheres.
+    // Even on sphere shaking I am not changing them.
     public float getX()
     {
         return x;
@@ -1038,7 +1106,7 @@ class Na : MonoBehaviour
     }
 }
 
-class Cl : MonoBehaviour
+class Cl : ScriptableObject
 {
     private float x;
     private float y;
