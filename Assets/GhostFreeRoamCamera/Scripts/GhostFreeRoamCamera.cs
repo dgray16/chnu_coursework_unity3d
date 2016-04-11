@@ -15,7 +15,9 @@ public class GhostFreeRoamCamera : MonoBehaviour
 
     // For sphere shaking
     private GameObject[] respawnedObjects;
-    private bool isShakingAllowed = false;
+    private bool isShakingAllowedByShaker = false;
+    private bool isShakingAllowedByConnection = false;
+    private bool isConnectionAllowed = true;
 
 
     public float initialSpeed = 10f;
@@ -101,30 +103,39 @@ public class GhostFreeRoamCamera : MonoBehaviour
 
 
         // Toggle visibility
-        if ((Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl)) && Input.GetKeyDown(KeyCode.H))
+        if ((Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl)) && Input.GetKeyDown(KeyCode.H) &&
+            !isShakingAllowedByShaker)
         {
             DisplayOrHideConnections();
         }
+       
 
         // Toggle shakig
         if ((Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl)) && Input.GetKeyDown(KeyCode.M)) {
-            if (!isShakingAllowed)
+            if (isShakingAllowedByConnection)
             {
-                respawnedObjects = GameObject.FindGameObjectsWithTag("Respawn");
+                if (isShakingAllowedByShaker)
+                {
+                    returnSpheresToOriginalPosition();
+                    isShakingAllowedByShaker = false;
+                }
+                else {
+                    respawnedObjects = GameObject.FindGameObjectsWithTag("Respawn");
 
-                foreach (GameObject spawnedObject in respawnedObjects)
-                    if (spawnedObject.name == ("Na 1_1")) shakingObj = spawnedObject;
-                isShakingAllowed = true;
+                    foreach (GameObject spawnedObject in respawnedObjects)
+                        if (spawnedObject.name == ("Na 1_1")) shakingObj = spawnedObject;
+                    isShakingAllowedByShaker = true;
+                }
+                
 
             }
-            else {
+            
                 // TODO return all objets to start point
-                // TODO disable show connections on shaking
-                isShakingAllowed = false;
-            } 
+                
+            
         }
 
-        if (isShakingAllowed) {
+        if (isShakingAllowedByShaker) {
             // TODO proceed with all objects
             Na na = listOfLevelOneNa[0];
             float x1 = na.getX() - 0.1f;
@@ -160,6 +171,9 @@ public class GhostFreeRoamCamera : MonoBehaviour
             foreach (GameObject respawnedObject in respawnedObjects)
                 if (respawnedObject.name == ("ClCylinder(Clone)") || respawnedObject.name == ("NaCylinder(Clone)"))
                     respawnedObject.GetComponent<Renderer>().enabled = false;
+            isShakingAllowedByConnection = true;
+
+            
         }
         else if (!isConnectionVisible)
         {
@@ -170,8 +184,16 @@ public class GhostFreeRoamCamera : MonoBehaviour
             foreach (GameObject respawnedObject in respawnedObjects)
                 if (respawnedObject.name == ("ClCylinder(Clone)") || respawnedObject.name == ("NaCylinder(Clone)"))
                     respawnedObject.GetComponent<Renderer>().enabled = true;
+
+            isShakingAllowedByConnection = false;
+
+
         }
 
+    }
+
+    private void returnSpheresToOriginalPosition() {
+        // TODO
     }
 
     private void CheckMove(KeyCode keyCode, ref Vector3 deltaPosition, Vector3 directionVector)
