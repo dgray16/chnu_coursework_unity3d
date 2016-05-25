@@ -3,6 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
+// TODO 
+    // 1. Init scene - making rounds around crystal. 
+    // On click button "Start - NaCl" or "Start - something" load level that is referenced to that button.
+    // 2. AboutBox on Esc button.
+    // 3. Change speed of shaking.
+    // 4. Графіт.
+    // 5. Fog.
+    // 6. Modify size of elements.
+    // 7. FixedUpdate method for controlling shaking frequency.
+    
 [RequireComponent(typeof(Camera))]
 public class GhostFreeRoamCamera : MonoBehaviour
 {
